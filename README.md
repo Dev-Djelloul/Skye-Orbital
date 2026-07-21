@@ -120,7 +120,7 @@ Les positions affichées sont calculées par propagation SGP4 à partir de TLE p
 
 ## Licence
 
-À définir.
+[MIT License](LICENSE) — Tu es libre d'utiliser, modifier, et redistribuer ce projet, du moment que tu me crédites.
 
 ---
 
