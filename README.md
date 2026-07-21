@@ -47,13 +47,13 @@ Filtrage par catégorie (actifs, stations, débris) et par événement d’origi
 
 Pour une position d’observateur donnée (géolocalisation ou saisie manuelle), calcul des prochains passages d’un objet sélectionné : heure de lever, culmination (élévation maximale), coucher, avec azimuts.
 
-### 🚧 Détection de rapprochements orbitaux (en cours)
+### ✅ Détection de rapprochements orbitaux
 
-Repérage des paires d’objets dont la distance minimale d’approche passe sous un seuil donné, sur une fenêtre de 72h. **Ceci reste un indicateur géométrique indicatif basé sur des données publiques, pas une prédiction de collision opérationnelle** — les vraies analyses de conjonction nécessitent des données de suivi haute précision (matrices de covariance) que les TLE publics ne contiennent pas.
+Repérage des paires d’objets dont la distance minimale d’approche passe sous un seuil donné (5 km en production), sur une fenêtre de 72h — pipeline Cloudflare Queues en 4 étapes (parse → bin-and-dispatch → precompute → scan → refine). **Ceci reste un indicateur géométrique indicatif basé sur des données publiques, pas une prédiction de collision opérationnelle** — les vraies analyses de conjonction nécessitent des données de suivi haute précision (matrices de covariance) que les TLE publics ne contiennent pas.
 
-### 📋 Prévu
+### ✅ Briefing quotidien (IA)
 
-Génération de briefings quotidiens en langage naturel et de fiches contextuelles sur les événements de fragmentation, via IA.
+Résumé quotidien en langage naturel (état du catalogue, rapprochements détectés) généré via Workers AI. Les fiches contextuelles par objet et la recherche en langage naturel restent **prévues**, en attente d’une clé API pour un modèle plus capable.
 
 ## Stack technique
 
@@ -84,8 +84,8 @@ Aucune dépendance lourde côté client au-delà de Cesium et satellite.js — p
 | 2 | Visualisation de base | ✅ Terminé |
 | 3 | Montée en volume (13 000+ objets) | ✅ Terminé |
 | 4 | Prédiction de passages | ✅ Terminé |
-| 5 | Détection de rapprochements orbitaux | 🚧 En cours |
-| 6 | Couche narrative IA | 📋 Prévu |
+| 5 | Détection de rapprochements orbitaux | ✅ Terminé |
+| 6 | Couche narrative IA (briefing quotidien) | ✅ Terminé — fiches contextuelles reportées |
 
 ## Lancer le projet en local
 
@@ -113,10 +113,10 @@ Les positions affichées sont calculées par propagation SGP4 à partir de TLE p
 
 ## Sources et remerciements
 
-- CelesTrak — catalogue TLE
-- satellite.js — implémentation SGP4/SDP4
-- CesiumJS — moteur de rendu 3D
-- Space-Track.org — USSPACECOM
+- [CelesTrak](https://celestrak.org/) — catalogue TLE
+- [satellite.js](https://github.com/shashwatak/satellite-js) — implémentation SGP4/SDP4
+- [CesiumJS](https://cesium.com/platform/cesiumjs/) — moteur de rendu 3D
+- [Space-Track.org](https://www.space-track.org/) — USSPACECOM
 
 ## Licence
 

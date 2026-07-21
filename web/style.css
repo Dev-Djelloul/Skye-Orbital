@@ -64,8 +64,9 @@ body {
 
 header {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.1rem;
   padding: 0.85rem 1.25rem;
   border-bottom: 1px solid var(--hairline);
   background: rgba(8, 12, 24, 0.35);
@@ -80,10 +81,12 @@ header {
 }
 
 header h1 {
+  flex-shrink: 0;
   font-size: 1.1rem;
   font-weight: 650;
   margin: 0;
   letter-spacing: 0.02em;
+  white-space: nowrap;
   background: linear-gradient(135deg, var(--text), var(--cyan-active) 140%);
   -webkit-background-clip: text;
   background-clip: text;
@@ -91,16 +94,29 @@ header h1 {
 }
 
 #status {
+  /* Le statut est le texte le plus long et le moins critique visuellement :
+     s'il ne tient pas sur la ligne, il passe seul à la ligne suivante plutôt
+     que d'écraser recherche/boutons (cf. `flex-basis: 100%` ci-dessous). */
+  flex: 1 1 260px;
+  flex-basis: 100%;
+  order: 10;
   font-size: 0.78rem;
   color: var(--muted);
+  text-align: right;
+}
+
+@media (min-width: 900px) {
+  #status {
+    flex-basis: 200px;
+    order: 0;
+  }
 }
 
 #searchBox {
   position: relative;
-  flex: 1 1 140px;
-  min-width: 140px;
+  flex: 1 1 200px;
+  min-width: 180px;
   max-width: 320px;
-  margin: 0 1.5rem;
   align-self: center;
 }
 
@@ -126,7 +142,13 @@ header h1 {
   position: absolute;
   top: calc(100% + 0.3rem);
   left: 0;
-  right: 0;
+  /* Le champ lui-même reste étroit (max-width: 320px sur #searchBox), mais la
+     liste doit pouvoir s'élargir davantage pour laisser la place aux badges
+     de catégorie + noms longs + NORAD ID sans les tronquer. `right: 0` collait
+     jusqu'ici la liste à la largeur du champ. */
+  width: max-content;
+  min-width: 100%;
+  max-width: min(420px, calc(100vw - 2.5rem));
   z-index: 20;
   margin: 0;
   padding: 0;
@@ -499,6 +521,8 @@ main {
 
 #conjunctionsBtn,
 #briefingBtn {
+  flex-shrink: 0;
+  white-space: nowrap;
   align-self: center;
   padding: 0.4rem 0.8rem;
   background: rgba(56, 225, 242, 0.06);

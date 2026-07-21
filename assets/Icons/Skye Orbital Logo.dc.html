@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/nocturne-8cc379af-886f-4ac2-bb7e-e7a07d5a38f4/styles.css">
+  <script src="_ds/nocturne-8cc379af-886f-4ac2-bb7e-e7a07d5a38f4/_ds_bundle.js"></script>
+  <style>
+    @keyframes so-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes so-orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  </style>
+</helmet>
+<div style="background: var(--color-bg); min-height: 100vh; display: flex; flex-direction: column; align-items: center; gap: var(--space-9); padding: var(--space-9) var(--space-6); font-family: var(--font-body);">
+
+  <div style="color: var(--color-neutral-400); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;">Skye Orbital — identité</div>
+
+  <!-- Primary horizontal lockup -->
+  <div style="display: flex; align-items: center; gap: var(--space-5); padding: var(--space-7) var(--space-9); border-radius: var(--radius-lg); background: linear-gradient(180deg, var(--color-neutral-800), var(--color-neutral-900)); box-shadow: var(--shadow-md); width: max-content;">
+    <svg width="76" height="76" viewBox="0 0 76 76" style="flex-shrink: 0;">
+      <defs>
+        <radialGradient id="so-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#9184d9" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#9184d9" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="so-ring-a" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#9184d9" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#9184d9" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#9184d9" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="so-ring-b" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#e9e9ed" stop-opacity="0"/>
+          <stop offset="50%" stop-color="#e9e9ed" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#e9e9ed" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <circle cx="38" cy="38" r="30" fill="url(#so-glow)"/>
+      <circle cx="38" cy="38" r="5.5" fill="#e9e9ed"/>
+      <g style="transform-origin: 38px 38px; animation: so-orbit 14s linear infinite;">
+        <ellipse cx="38" cy="38" rx="30" ry="13" fill="none" stroke="url(#so-ring-a)" stroke-width="2"/>
+      </g>
+      <g style="transform-origin: 38px 38px; transform: rotate(60deg); animation: so-orbit 20s linear infinite reverse;">
+        <ellipse cx="38" cy="38" rx="30" ry="13" fill="none" stroke="url(#so-ring-b)" stroke-width="1.5"/>
+      </g>
+      <g style="transform-origin: 38px 38px; transform: rotate(120deg); animation: so-orbit 26s linear infinite;">
+        <ellipse cx="38" cy="38" rx="30" ry="13" fill="none" stroke="url(#so-ring-b)" stroke-width="1.5"/>
+        <circle r="2.4" fill="#9184d9">
+          <animateMotion dur="26s" repeatCount="indefinite" path="M 8,38 A 30,13 0 1 1 68,38 A 30,13 0 1 1 8,38"/>
+        </circle>
+      </g>
+    </svg>
+    <div style="display: flex; flex-direction: column; line-height: 1;">
+      <div style="font-family: var(--font-heading); font-weight: 500; font-size: 34px; color: var(--color-text); letter-spacing: -0.01em;">Skye<span style="color: var(--color-accent-300);">Orbital</span></div>
+      <div style="font-family: var(--font-body); font-weight: 400; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-neutral-500); margin-top: 6px; white-space: nowrap;">Suivi orbital en temps réel</div>
+    </div>
+  </div>
+
+  <!-- Icon-only mark -->
+  <div style="display: flex; align-items: center; gap: var(--space-6);">
+    <div style="display: flex; align-items: center; justify-content: center; width: 96px; height: 96px; border-radius: var(--radius-lg); background: var(--color-neutral-900); box-shadow: var(--shadow-sm);">
+      <svg width="56" height="56" viewBox="0 0 76 76">
+        <circle cx="38" cy="38" r="5.5" fill="#e9e9ed"/>
+        <ellipse cx="38" cy="38" rx="30" ry="13" fill="none" stroke="#9184d9" stroke-width="2" opacity="0.9"/>
+        <ellipse cx="38" cy="38" rx="30" ry="13" fill="none" stroke="#e9e9ed" stroke-width="1.5" opacity="0.3" transform="rotate(60 38 38)"/>
+        <ellipse cx="38" cy="38" rx="30" ry="13" fill="none" stroke="#e9e9ed" stroke-width="1.5" opacity="0.3" transform="rotate(120 38 38)"/>
+      </svg>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+      <div style="font-family: var(--font-heading); font-weight: 500; font-size: 15px; color: var(--color-neutral-400);">Favicon / avatar</div>
+      <div style="font-family: var(--font-body); font-size: 12px; color: var(--color-neutral-500);">Marque seule, sans texte</div>
+    </div>
+  </div>
+
+  <!-- On white-ish surface variant for context -->
+  <div style="display: flex; align-items: center; gap: var(--space-5); padding: var(--space-6) var(--space-7); border-radius: var(--radius-lg); border: 1px solid var(--color-neutral-800);">
+    <svg width="40" height="40" viewBox="0 0 76 76">
+      <circle cx="38" cy="38" r="5.5" fill="#e9e9ed"/>
+      <ellipse cx="38" cy="38" rx="30" ry="13" fill="none" stroke="#9184d9" stroke-width="2.4"/>
+      <ellipse cx="38" cy="38" rx="30" ry="13" fill="none" stroke="#e9e9ed" stroke-width="1.8" opacity="0.3" transform="rotate(65 38 38)"/>
+    </svg>
+    <div style="font-family: var(--font-heading); font-weight: 500; font-size: 20px; color: var(--color-text);">Skye<span style="color: var(--color-accent-300);">Orbital</span></div>
+  </div>
+
+</div>
+
+</x-dc>
+</body>
+</html>

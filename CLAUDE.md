@@ -1,10 +1,10 @@
-# Sky Orbital
+# Skye Orbital
 
 Tableau de bord temps réel de suivi de satellites et débris spatiaux (globe 3D
 CesiumJS), avec prédiction de passages, détection de rapprochements orbitaux
 et briefing quotidien généré par IA. Cadrage complet dans
 `ORBITAL-WATCH-ARCHITECTURE.md` (nom de code historique "Orbital Watch" — le
-produit s'appelle désormais **Sky Orbital**, cf. `README.md`).
+produit s'appelle désormais **Skye Orbital**, cf. `README.md`).
 
 Développé par phases successives avec Claude Code, budget crédits limité —
 chaque phase a été testée avant de passer à la suivante. Les 6 phases prévues
@@ -125,7 +125,7 @@ web/app.js                  Orchestration frontend : état, filtres, recherche, 
 ## État actuel — À VÉRIFIER EN PRIORITÉ
 
 Une phase d'habillage visuel vient d'être codée (renommage "Orbital Watch" →
-"Sky Orbital", nouvelle palette par catégorie, glassmorphism, skybox
+"Skye Orbital", nouvelle palette par catégorie, glassmorphism, skybox
 procédural étoiles/Voie lactée/planètes décoratives, lueur sur objet
 sélectionné, trace au sol en dégradé, transitions d'ouverture des modals).
 **Aucune vérification visuelle réelle n'a été faite** — le code a été relu et
