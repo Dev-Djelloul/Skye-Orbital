@@ -3,3 +3,10 @@ node_modules/
 .DS_Store
 dist/
 build/
+
+# État local de Wrangler (miniflare, cache dev) — ne pas versionner
+.wrangler/
+
+# Config locale/machine de Claude Code
+.claude/settings.local.json
+.claude/scheduled_tasks.lock

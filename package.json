@@ -1,0 +1,23 @@
+{
+  "name": "skye-orbital",
+  "version": "1.0.0",
+  "description": "Un tableau de bord temps réel qui visualise les satellites actifs et les débris spatiaux en orbite terrestre basse, sur un globe 3D, avec prédiction des passages et détection des rapprochements orbitaux.",
+  "main": "conjunctions-pipeline.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dev-Djelloul/skye-orbital.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dev-Djelloul/skye-orbital/issues"
+  },
+  "homepage": "https://github.com/Dev-Djelloul/skye-orbital#readme",
+  "dependencies": {
+    "satellite.js": "^5.0.0"
+  }
+}

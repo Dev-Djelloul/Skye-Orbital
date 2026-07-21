@@ -1,0 +1,35 @@
+name = "orbital-api"
+main = "orbital-api.js"
+compatibility_date = "2026-06-24"
+
+[[kv_namespaces]]
+binding = "TLE_CACHE"
+id = "1927e626d36e40f281934c49f1d94591"
+
+[[kv_namespaces]]
+binding = "CONJ_KV"
+id = "4dc32e8da2394dde92817f627c3ca97f"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "digitalblueskye"
+database_id = "eeb9d1b0-26ed-48a1-beb3-b0a944765174"
+
+[[queues.producers]]
+queue = "orbital-conjunctions"
+binding = "CONJ_QUEUE"
+
+[[queues.consumers]]
+queue = "orbital-conjunctions"
+max_batch_size = 1
+max_retries = 3
+dead_letter_queue = "orbital-conjunctions-dlq"
+
+[ai]
+binding = "AI"
+
+# 0 */2 * * *  : rafraîchissement TLE (Phase 1)
+# 0 3 * * *    : kickoff quotidien du screening de conjonctions (Phase 5), 3h UTC
+# 30 3 * * *   : briefing quotidien (Phase 6), 3h30 UTC — après le screening
+[triggers]
+crons = ["0 */2 * * *", "0 3 * * *", "30 3 * * *"]

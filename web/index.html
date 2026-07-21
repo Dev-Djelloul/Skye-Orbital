@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skye Orbital — Globe temps réel</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/cesium@1.143.0/Build/Cesium/Widgets/widgets.css"
+    integrity="sha384-ghEeMdcWWzRv/BPeUcX835vcKDGrxvROXisl/Btpv3GeekBUXTSPVcFJpI1Tcrgp"
+    crossorigin="anonymous"
+  />
+  <script>
+    window.CESIUM_BASE_URL = 'https://cdn.jsdelivr.net/npm/cesium@1.143.0/Build/Cesium/';
+  </script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/cesium@1.143.0/Build/Cesium/Cesium.js"
+    integrity="sha384-6pySA8bzGAn2+aYh8KWmvzl5DRnspbScFYUbrFcu2ayckTxx8gyn+/WNvNbPM9iG"
+    crossorigin="anonymous"
+  ></script>
+</head>
+<body>
+  <header>
+    <h1>Skye Orbital</h1>
+    <div id="searchBox">
+      <input
+        type="text"
+        id="searchInput"
+        aria-label="Rechercher un objet par nom ou NORAD ID"
+        placeholder="Rechercher un objet (nom ou NORAD ID)…"
+        autocomplete="off"
+      />
+      <ul id="searchResults" hidden></ul>
+    </div>
+    <button id="briefingBtn" type="button">Briefing du jour</button>
+    <button id="conjunctionsBtn" type="button">Rapprochements</button>
+    <div id="status">Chargement…</div>
+  </header>
+  <main>
+    <div id="globeWrap">
+      <div id="cesiumContainer"></div>
+      <div id="filterPanel">
+        <label><input type="checkbox" id="filter-active" checked /> Actifs (Starlink)</label>
+        <label><input type="checkbox" id="filter-stations" checked /> Stations</label>
+        <label><input type="checkbox" id="filter-debris" checked /> Débris</label>
+        <div id="debrisEvents"></div>
+      </div>
+      <div id="loader">
+        <div class="spinner"></div>
+        <p>Initialisation du globe 3D…</p>
+      </div>
+    </div>
+    <aside id="detail">
+      <section id="observerPanel">
+        <h2>Observateur</h2>
+        <div class="row">
+          <label>Lat <input type="number" id="obsLat" step="0.0001" min="-90" max="90" placeholder="48.8566" /></label>
+          <label>Lon <input type="number" id="obsLon" step="0.0001" min="-180" max="180" placeholder="2.3522" /></label>
+        </div>
+        <button id="obsGeolocate" type="button">Utiliser ma position</button>
+        <p id="obsStatus" class="hint"></p>
+      </section>
+
+      <section id="objectDetail">
+        <p class="hint">Clique sur un objet pour afficher sa fiche.</p>
+      </section>
+
+      <section id="passesSection" hidden>
+        <h2>Prochains passages</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Lever</th>
+                <th>Az.</th>
+                <th>Culmination</th>
+                <th>Élév. max</th>
+                <th>Az.</th>
+                <th>Coucher</th>
+                <th>Az.</th>
+              </tr>
+            </thead>
+            <tbody id="passesTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </aside>
+  </main>
+  <div id="briefingModal" class="modal-overlay" hidden>
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h2>Briefing du jour</h2>
+        <button id="briefingClose" type="button" class="modal-close" aria-label="Fermer">✕</button>
+      </div>
+      <div id="briefingBody" class="modal-body">
+        <p class="hint">Chargement…</p>
+      </div>
+    </div>
+  </div>
+  <div id="conjunctionsModal" class="modal-overlay" hidden>
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h2>Rapprochements à venir</h2>
+        <button id="conjunctionsClose" type="button" class="modal-close" aria-label="Fermer">✕</button>
+      </div>
+      <p class="warn">
+        Ces rapprochements sont des <strong>indicateurs géométriques</strong> calculés à partir de TLE publics,
+        pas des alertes de collision au sens opérationnel : les vraies analyses de conjonction (USSPACECOM)
+        utilisent des données de suivi et des matrices de covariance que les TLE ne contiennent pas.
+        Ne pas utiliser pour une décision opérationnelle.
+      </p>
+      <div id="conjunctionsBody" class="modal-body">
+        <p class="hint">Chargement…</p>
+      </div>
+    </div>
+  </div>
+  <script
+    src="https://cdn.jsdelivr.net/npm/satellite.js@5.0.0/dist/satellite.min.js"
+    integrity="sha384-e6V1JVpc+kVNTxT0gEOla7yL4c92Romsw7itPoipfzHbEjzUwPhTv6oeVDMHHzqT"
+    crossorigin="anonymous"
+  ></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
