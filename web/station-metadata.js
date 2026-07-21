@@ -6,9 +6,41 @@
 // fiable ; tout objet absent de cette table retombe sur la fiche standard.
 //
 // Photos : Wikimedia Commons (licences libres), URLs vérifiées manuellement.
+// Logos d'agences : fournis par l'utilisateur (assets/Icons/) pour NASA, ESA,
+// JAXA, CSA, Roscosmos, SpaceX et CMSA (Chine) ; complété depuis Wikimedia
+// Commons pour Northrop Grumman (seule agence sans asset fourni).
+
+const AGENCIES = {
+  nasa: { name: 'NASA', icon: 'assets/agencies/nasa.png', url: 'https://www.nasa.gov/' },
+  esa: { name: 'ESA', icon: 'assets/agencies/esa.png', url: 'https://www.esa.int/' },
+  jaxa: { name: 'JAXA', icon: 'assets/agencies/jaxa.png', url: 'https://global.jaxa.jp/' },
+  csa: {
+    name: 'ASC/CSA',
+    icon: 'assets/agencies/csa.png',
+    url: 'https://www.asc-csa.gc.ca/',
+  },
+  // roscosmos.ru renvoie une 403 depuis de nombreux réseaux occidentaux (blocage
+  // géographique confirmé) — le badge pointe vers Wikipédia plutôt qu'un lien mort.
+  roscosmos: {
+    name: 'Roscosmos',
+    icon: 'assets/agencies/roscosmos.png',
+    url: 'https://fr.wikipedia.org/wiki/Roscosmos',
+  },
+  spacex: { name: 'SpaceX', icon: 'assets/agencies/spacex.png', url: 'https://www.spacex.com/' },
+  northropGrumman: {
+    name: 'Northrop Grumman',
+    icon: 'assets/agencies/northrop-grumman.png',
+    url: 'https://www.northropgrumman.com/space/cygnus-spacecraft/',
+  },
+  cmsa: {
+    name: 'CMSA (Chine)',
+    icon: 'assets/agencies/cmsa.png',
+    url: 'http://www.cmse.gov.cn/',
+  },
+};
 
 const ISS = {
-  agency: 'NASA / Roscosmos / ESA / JAXA / CSA',
+  agencies: [AGENCIES.nasa, AGENCIES.roscosmos, AGENCIES.esa, AGENCIES.jaxa, AGENCIES.csa],
   site: 'https://www.nasa.gov/reference/international-space-station/',
   virtualTour: 'https://www.nasa.gov/feature/iss-virtual-tour/',
   wikipedia: 'https://fr.wikipedia.org/wiki/Station_spatiale_internationale',
@@ -20,8 +52,7 @@ const ISS = {
 };
 
 const CSS = {
-  agency: 'CMSA (Chine)',
-  site: 'http://www.cmse.gov.cn/',
+  agencies: [AGENCIES.cmsa],
   wikipedia: 'https://fr.wikipedia.org/wiki/Station_spatiale_chinoise',
   photo:
     'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Chinese_Tiangong_Space_Station.jpg/960px-Chinese_Tiangong_Space_Station.jpg',
@@ -43,10 +74,7 @@ export const STATION_METADATA = {
 
   // Véhicules amarrés / visiteurs — fiche propre, pas confondue avec la station hôte
   'SOYUZ-MS 28': {
-    agency: 'Roscosmos',
-    // roscosmos.ru renvoie une 403 depuis de nombreux réseaux occidentaux (blocage
-    // géographique confirmé) — pas de lien "site officiel" fiable, Wikipédia sert
-    // de source de référence.
+    agencies: [AGENCIES.roscosmos],
     wikipedia: 'https://fr.wikipedia.org/wiki/Soyouz_(vaisseau_spatial)',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Soyuz_TMA-16_approaching_ISS.jpg/960px-Soyuz_TMA-16_approaching_ISS.jpg',
@@ -54,7 +82,7 @@ export const STATION_METADATA = {
     description: "Vaisseau russe habité, amarré à l'ISS pour la relève d'équipage.",
   },
   'CREW DRAGON 12': {
-    agency: 'SpaceX',
+    agencies: [AGENCIES.spacex],
     site: 'https://www.spacex.com/vehicles/dragon/',
     wikipedia: 'https://fr.wikipedia.org/wiki/SpaceX_Crew_Dragon',
     photo:
@@ -63,7 +91,7 @@ export const STATION_METADATA = {
     description: "Capsule habitée commerciale de SpaceX, amarrée à l'ISS dans le cadre du programme Commercial Crew de la NASA.",
   },
   'CYGNUS NG-24': {
-    agency: 'Northrop Grumman',
+    agencies: [AGENCIES.northropGrumman],
     site: 'https://www.northropgrumman.com/space/cygnus-spacecraft/',
     wikipedia: 'https://fr.wikipedia.org/wiki/Cygnus_(vaisseau_spatial)',
     photo:
@@ -72,8 +100,7 @@ export const STATION_METADATA = {
     description: "Cargo automatique ravitaillant l'ISS, développé par Northrop Grumman pour la NASA.",
   },
   'PROGRESS-MS 33': {
-    agency: 'Roscosmos',
-    // roscosmos.ru bloqué (403) depuis de nombreux réseaux occidentaux — voir SOYUZ-MS 28.
+    agencies: [AGENCIES.roscosmos],
     wikipedia: 'https://fr.wikipedia.org/wiki/Progress_(vaisseau_spatial)',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/ISS_Progress_cargo_spacecraft.jpg/960px-ISS_Progress_cargo_spacecraft.jpg',
@@ -81,8 +108,7 @@ export const STATION_METADATA = {
     description: "Cargo automatique russe ravitaillant l'ISS.",
   },
   'PROGRESS-MS 34': {
-    agency: 'Roscosmos',
-    // roscosmos.ru bloqué (403) depuis de nombreux réseaux occidentaux — voir SOYUZ-MS 28.
+    agencies: [AGENCIES.roscosmos],
     wikipedia: 'https://fr.wikipedia.org/wiki/Progress_(vaisseau_spatial)',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/ISS_Progress_cargo_spacecraft.jpg/960px-ISS_Progress_cargo_spacecraft.jpg',
@@ -90,8 +116,7 @@ export const STATION_METADATA = {
     description: "Cargo automatique russe ravitaillant l'ISS.",
   },
   'TIANZHOU-10': {
-    agency: 'CMSA (Chine)',
-    site: 'http://www.cmse.gov.cn/',
+    agencies: [AGENCIES.cmsa],
     wikipedia: 'https://fr.wikipedia.org/wiki/Tianzhou_(vaisseau_spatial)',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Chinese_Tiangong_Space_Station.jpg/960px-Chinese_Tiangong_Space_Station.jpg',
@@ -99,8 +124,7 @@ export const STATION_METADATA = {
     description: 'Cargo automatique chinois ravitaillant la station Tiangong.',
   },
   'SHENZHOU-23 (SZ-23)': {
-    agency: 'CMSA (Chine)',
-    site: 'http://www.cmse.gov.cn/',
+    agencies: [AGENCIES.cmsa],
     wikipedia: 'https://fr.wikipedia.org/wiki/Programme_Shenzhou',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/8/8c/Shenzhou_spacecraft_ground_test.png',

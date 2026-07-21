@@ -527,22 +527,43 @@ main {
   color: var(--text);
 }
 
-.station-links {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0.15rem 0.6rem;
+.agency-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
   margin: 0 0 0.6rem;
 }
 
-.station-links dt {
-  color: var(--muted);
-  font-family: var(--font-ui);
-  font-size: 0.72rem;
+.agency-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  padding: 0 0.5rem;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 5px;
+  transition: transform var(--transition-fast, 0.15s) ease;
 }
 
-.station-links dd {
-  margin: 0;
-  font-size: 0.78rem;
+.agency-badge:hover {
+  transform: translateY(-1px);
+  background: #fff;
+}
+
+.agency-badge img {
+  display: block;
+  height: 20px;
+  width: auto;
+  max-width: 72px;
+  object-fit: contain;
+}
+
+.agency-badge-text {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  white-space: nowrap;
 }
 
 .station-actions {

@@ -525,14 +525,20 @@ function triggerFadeSwap() {
   objectDetailEl.classList.add('fade-swap');
 }
 
+function renderAgencyBadge(agency) {
+  const label = escapeHtml(agency.name);
+  const inner = agency.icon
+    ? `<img src="${escapeHtml(agency.icon)}" alt="${label}" />`
+    : `<span class="agency-badge-text">${label}</span>`;
+  return `<a class="agency-badge" href="${escapeHtml(agency.url)}" target="_blank" rel="noopener noreferrer" title="${label}">${inner}</a>`;
+}
+
 function renderStationCard(meta) {
   return `
     <div class="station-card">
       <img class="station-photo" src="${escapeHtml(meta.photo)}" alt="" loading="lazy" />
       <p class="station-description">${escapeHtml(meta.description)}</p>
-      <dl class="station-links">
-        <dt>Agence</dt><dd>${escapeHtml(meta.agency)}</dd>
-      </dl>
+      <div class="agency-badges">${meta.agencies.map(renderAgencyBadge).join('')}</div>
       <div class="station-actions">
         ${meta.site ? `<a href="${escapeHtml(meta.site)}" target="_blank" rel="noopener noreferrer">Site officiel ↗</a>` : ''}
         ${meta.virtualTour ? `<a href="${escapeHtml(meta.virtualTour)}" target="_blank" rel="noopener noreferrer">Visite virtuelle ↗</a>` : ''}
