@@ -1,6 +1,7 @@
 import * as Data from './data.js';
 import * as Globe from './globe.js';
 import * as Passes from './passes.js';
+import { getStationMetadata } from './station-metadata.js';
 
 const REFRESH_MS = 1000;
 const PASSES_REFRESH_MS = 60000;
@@ -524,10 +525,28 @@ function triggerFadeSwap() {
   objectDetailEl.classList.add('fade-swap');
 }
 
+function renderStationCard(meta) {
+  return `
+    <div class="station-card">
+      <img class="station-photo" src="${escapeHtml(meta.photo)}" alt="" loading="lazy" />
+      <p class="station-description">${escapeHtml(meta.description)}</p>
+      <dl class="station-links">
+        <dt>Agence</dt><dd>${escapeHtml(meta.agency)}</dd>
+      </dl>
+      <div class="station-actions">
+        <a href="${escapeHtml(meta.site)}" target="_blank" rel="noopener noreferrer">Site officiel ↗</a>
+        <a href="${escapeHtml(meta.wikipedia)}" target="_blank" rel="noopener noreferrer">Wikipédia ↗</a>
+      </div>
+      <p class="station-credit">Photo : ${escapeHtml(meta.photoCredit)}</p>
+    </div>
+  `;
+}
+
 function updateDetail(now) {
   const sat = state.satellites.find((s) => s.noradId === state.selectedNoradId);
   const currentId = sat?.current ? sat.noradId : null;
-  if (currentId !== lastRenderedNoradId) {
+  const selectionChanged = currentId !== lastRenderedNoradId;
+  if (selectionChanged) {
     triggerFadeSwap();
     lastRenderedNoradId = currentId;
   }
@@ -537,26 +556,41 @@ function updateDetail(now) {
     return;
   }
 
+  // Ne reconstruit le squelette (dont la photo <img>) que lors d'un changement
+  // de sélection — un innerHTML rebuild à chaque tick (1s) interromprait
+  // indéfiniment le chargement de l'image avant qu'elle n'ait le temps d'arriver.
+  if (selectionChanged) {
+    const meta = getStationMetadata(sat.name);
+    objectDetailEl.innerHTML = `
+      <h2><span class="selection-dot"></span>${escapeHtml(sat.name)}</h2>
+      ${meta ? renderStationCard(meta) : ''}
+      <dl>
+        <dt>NORAD ID</dt><dd>${sat.noradId}</dd>
+        <dt>Désignation intl.</dt><dd>${sat.intlDesignator}</dd>
+        ${sat.originEvent ? `<dt>Événement d'origine</dt><dd>${escapeHtml(sat.originEvent)}</dd>` : ''}
+        <dt>Latitude</dt><dd data-field="lat"></dd>
+        <dt>Longitude</dt><dd data-field="lon"></dd>
+        <dt>Altitude</dt><dd data-field="alt"></dd>
+        <dt>Inclinaison</dt><dd data-field="incl"></dd>
+        <dt>Période orbitale</dt><dd data-field="period"></dd>
+        <dt>Époque du TLE</dt><dd data-field="epoch"></dd>
+        <dt>Âge du TLE</dt><dd data-field="age"></dd>
+      </dl>
+      <p class="warn">Position calculée par propagation SGP4 à partir d'un TLE public. Précision de l'ordre du km, se dégrade avec l'âge du TLE — ne pas utiliser pour une décision opérationnelle.</p>
+    `;
+  }
+
   const periodMin = Data.orbitalPeriodMinutes(sat.satrec);
   const incl = Data.inclinationDeg(sat.satrec);
   const tleAgeMs = now - sat.epochDate;
 
-  objectDetailEl.innerHTML = `
-    <h2><span class="selection-dot"></span>${escapeHtml(sat.name)}</h2>
-    <dl>
-      <dt>NORAD ID</dt><dd>${sat.noradId}</dd>
-      <dt>Désignation intl.</dt><dd>${sat.intlDesignator}</dd>
-      ${sat.originEvent ? `<dt>Événement d'origine</dt><dd>${escapeHtml(sat.originEvent)}</dd>` : ''}
-      <dt>Latitude</dt><dd>${sat.current.latitudeDeg.toFixed(3)}°</dd>
-      <dt>Longitude</dt><dd>${sat.current.longitudeDeg.toFixed(3)}°</dd>
-      <dt>Altitude</dt><dd>${sat.current.altitudeKm.toFixed(1)} km</dd>
-      <dt>Inclinaison</dt><dd>${incl.toFixed(2)}°</dd>
-      <dt>Période orbitale</dt><dd>${periodMin.toFixed(1)} min</dd>
-      <dt>Époque du TLE</dt><dd>${sat.epochDate.toISOString()}</dd>
-      <dt>Âge du TLE</dt><dd>${Data.formatDuration(tleAgeMs)}</dd>
-    </dl>
-    <p class="warn">Position calculée par propagation SGP4 à partir d'un TLE public. Précision de l'ordre du km, se dégrade avec l'âge du TLE — ne pas utiliser pour une décision opérationnelle.</p>
-  `;
+  objectDetailEl.querySelector('[data-field="lat"]').textContent = `${sat.current.latitudeDeg.toFixed(3)}°`;
+  objectDetailEl.querySelector('[data-field="lon"]').textContent = `${sat.current.longitudeDeg.toFixed(3)}°`;
+  objectDetailEl.querySelector('[data-field="alt"]').textContent = `${sat.current.altitudeKm.toFixed(1)} km`;
+  objectDetailEl.querySelector('[data-field="incl"]').textContent = `${incl.toFixed(2)}°`;
+  objectDetailEl.querySelector('[data-field="period"]').textContent = `${periodMin.toFixed(1)} min`;
+  objectDetailEl.querySelector('[data-field="epoch"]').textContent = sat.epochDate.toISOString();
+  objectDetailEl.querySelector('[data-field="age"]').textContent = Data.formatDuration(tleAgeMs);
 }
 
 function escapeHtml(str) {
