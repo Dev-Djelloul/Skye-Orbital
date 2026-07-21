@@ -534,7 +534,8 @@ function renderStationCard(meta) {
         <dt>Agence</dt><dd>${escapeHtml(meta.agency)}</dd>
       </dl>
       <div class="station-actions">
-        <a href="${escapeHtml(meta.site)}" target="_blank" rel="noopener noreferrer">Site officiel ↗</a>
+        ${meta.site ? `<a href="${escapeHtml(meta.site)}" target="_blank" rel="noopener noreferrer">Site officiel ↗</a>` : ''}
+        ${meta.virtualTour ? `<a href="${escapeHtml(meta.virtualTour)}" target="_blank" rel="noopener noreferrer">Visite virtuelle ↗</a>` : ''}
         <a href="${escapeHtml(meta.wikipedia)}" target="_blank" rel="noopener noreferrer">Wikipédia ↗</a>
       </div>
       <p class="station-credit">Photo : ${escapeHtml(meta.photoCredit)}</p>

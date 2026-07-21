@@ -9,13 +9,14 @@
 
 const ISS = {
   agency: 'NASA / Roscosmos / ESA / JAXA / CSA',
-  site: 'https://www.nasa.gov/mission/international-space-station/',
+  site: 'https://www.nasa.gov/reference/international-space-station/',
+  virtualTour: 'https://www.nasa.gov/feature/iss-virtual-tour/',
   wikipedia: 'https://fr.wikipedia.org/wiki/Station_spatiale_internationale',
   photo:
     'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/STS-134_International_Space_Station_after_undocking.jpg/960px-STS-134_International_Space_Station_after_undocking.jpg',
   photoCredit: 'NASA — Wikimedia Commons',
   description:
-    "Station spatiale internationale, en orbite depuis 1998. Coopération entre les agences spatiales américaine, russe, européenne, japonaise et canadienne.",
+    "Station spatiale internationale, en orbite depuis 1998. Coopération entre les agences spatiales américaine, russe, européenne, japonaise et canadienne. ZARYA, POISK et NAUKA sont trois modules de cette même station, pas des stations distinctes — POISK sert notamment de port d'amarrage pour les vaisseaux russes (Soyouz, Progress).",
 };
 
 const CSS = {
@@ -43,7 +44,9 @@ export const STATION_METADATA = {
   // Véhicules amarrés / visiteurs — fiche propre, pas confondue avec la station hôte
   'SOYUZ-MS 28': {
     agency: 'Roscosmos',
-    site: 'https://www.roscosmos.ru/',
+    // roscosmos.ru renvoie une 403 depuis de nombreux réseaux occidentaux (blocage
+    // géographique confirmé) — pas de lien "site officiel" fiable, Wikipédia sert
+    // de source de référence.
     wikipedia: 'https://fr.wikipedia.org/wiki/Soyouz_(vaisseau_spatial)',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Soyuz_TMA-16_approaching_ISS.jpg/960px-Soyuz_TMA-16_approaching_ISS.jpg',
@@ -70,7 +73,7 @@ export const STATION_METADATA = {
   },
   'PROGRESS-MS 33': {
     agency: 'Roscosmos',
-    site: 'https://www.roscosmos.ru/',
+    // roscosmos.ru bloqué (403) depuis de nombreux réseaux occidentaux — voir SOYUZ-MS 28.
     wikipedia: 'https://fr.wikipedia.org/wiki/Progress_(vaisseau_spatial)',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/ISS_Progress_cargo_spacecraft.jpg/960px-ISS_Progress_cargo_spacecraft.jpg',
@@ -79,7 +82,7 @@ export const STATION_METADATA = {
   },
   'PROGRESS-MS 34': {
     agency: 'Roscosmos',
-    site: 'https://www.roscosmos.ru/',
+    // roscosmos.ru bloqué (403) depuis de nombreux réseaux occidentaux — voir SOYUZ-MS 28.
     wikipedia: 'https://fr.wikipedia.org/wiki/Progress_(vaisseau_spatial)',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/ISS_Progress_cargo_spacecraft.jpg/960px-ISS_Progress_cargo_spacecraft.jpg',
