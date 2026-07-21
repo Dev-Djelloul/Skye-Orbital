@@ -1,9 +1,8 @@
 # 🛰️ Skye Orbital
 
-Un tableau de bord temps réel qui visualise les satellites actifs et les débris spatiaux en orbite terrestre basse, sur un globe 3D, avec prédiction des passages et détection des rapprochements orbitaux.
+Un tableau de bord - en temps réel - qui visualise les satellites actifs et les débris spatiaux en orbite terrestre basse, sur un globe 3D, avec prédiction des passages et détection des rapprochements orbitaux.
 
-> Projet personnel de Djelloul ABID — laboratoire d’expérimentation autour du web, des données ouvertes et de l’IA, dans la continuité de DigitalBlueSkye.
-> 
+> Ce projet personnel a été réalisé comme un laboratoire d’expérimentation autour du web, des données ouvertes et de l’IA.
 
 **🔴 Démo en ligne : [skye-orbital.pages.dev](https://skye-orbital.pages.dev/)**
 
