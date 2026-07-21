@@ -5,6 +5,8 @@ Un tableau de bord temps réel qui visualise les satellites actifs et les débri
 > Projet personnel de Djelloul ABID — laboratoire d’expérimentation autour du web, des données ouvertes et de l’IA, dans la continuité de DigitalBlueSkye.
 > 
 
+**🔴 Démo en ligne : [skye-orbital.pages.dev](https://skye-orbital.pages.dev/)**
+
 ---
 
 ## En bref
@@ -86,6 +88,8 @@ Aucune dépendance lourde côté client au-delà de Cesium et satellite.js — p
 | 6 | Couche narrative IA | 📋 Prévu |
 
 ## Lancer le projet en local
+
+> Pas envie d’installer quoi que ce soit ? Le projet est déployé et accessible directement : **[skye-orbital.pages.dev](https://skye-orbital.pages.dev/)**.
 
 ```bash
 # Cloner le dépôt
