@@ -84,7 +84,7 @@ export const STATION_METADATA = {
   'CREW DRAGON 12': {
     agencies: [AGENCIES.spacex],
     site: 'https://www.spacex.com/vehicles/dragon/',
-    wikipedia: 'https://fr.wikipedia.org/wiki/SpaceX_Crew_Dragon',
+    wikipedia: 'https://fr.wikipedia.org/wiki/SpaceX_Crew-12',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/SpaceX_Crew_Dragon.jpg/960px-SpaceX_Crew_Dragon.jpg',
     photoCredit: 'SpaceX — Wikimedia Commons',
@@ -93,7 +93,7 @@ export const STATION_METADATA = {
   'CYGNUS NG-24': {
     agencies: [AGENCIES.northropGrumman],
     site: 'https://www.northropgrumman.com/space/cygnus-spacecraft/',
-    wikipedia: 'https://fr.wikipedia.org/wiki/Cygnus_(vaisseau_spatial)',
+    wikipedia: 'https://fr.wikipedia.org/wiki/Cygnus_(v%C3%A9hicule_spatial)',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/ISS-45_Cygnus_5_approaching_the_ISS_%281%29.jpg/960px-ISS-45_Cygnus_5_approaching_the_ISS_%281%29.jpg',
     photoCredit: 'NASA — Wikimedia Commons',
@@ -101,7 +101,7 @@ export const STATION_METADATA = {
   },
   'PROGRESS-MS 33': {
     agencies: [AGENCIES.roscosmos],
-    wikipedia: 'https://fr.wikipedia.org/wiki/Progress_(vaisseau_spatial)',
+    wikipedia: 'https://fr.wikipedia.org/wiki/Progress',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/ISS_Progress_cargo_spacecraft.jpg/960px-ISS_Progress_cargo_spacecraft.jpg',
     photoCredit: 'NASA — Wikimedia Commons',
@@ -109,7 +109,7 @@ export const STATION_METADATA = {
   },
   'PROGRESS-MS 34': {
     agencies: [AGENCIES.roscosmos],
-    wikipedia: 'https://fr.wikipedia.org/wiki/Progress_(vaisseau_spatial)',
+    wikipedia: 'https://fr.wikipedia.org/wiki/Progress',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/ISS_Progress_cargo_spacecraft.jpg/960px-ISS_Progress_cargo_spacecraft.jpg',
     photoCredit: 'NASA — Wikimedia Commons',
@@ -117,7 +117,7 @@ export const STATION_METADATA = {
   },
   'TIANZHOU-10': {
     agencies: [AGENCIES.cmsa],
-    wikipedia: 'https://fr.wikipedia.org/wiki/Tianzhou_(vaisseau_spatial)',
+    wikipedia: 'https://fr.wikipedia.org/wiki/Tianzhou_(v%C3%A9hicule_spatial)',
     photo:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Chinese_Tiangong_Space_Station.jpg/960px-Chinese_Tiangong_Space_Station.jpg',
     photoCredit: 'CMSA / Shujianyang — Wikimedia Commons',
