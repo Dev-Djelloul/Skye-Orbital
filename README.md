@@ -4,6 +4,9 @@ Un tableau de bord - en temps réel - qui visualise les satellites actifs et les
 
 > Ce projet personnel a été réalisé comme un laboratoire d’expérimentation autour du web, des données ouvertes et de l’IA.
 
+> Cette application a été réalisée avec Claude code.
+
+
 **🔴 Démo en ligne : [skye-orbital.pages.dev](https://skye-orbital.pages.dev/)**
 
 ---
@@ -25,8 +28,6 @@ Le domaine du suivi orbital est déjà occupé par des acteurs sérieux : Space-
 ## Aperçu
 
 Le globe affiche les objets suivis en 3D, avec sélection au clic, fiche technique détaillée (altitude, inclinaison, période orbitale, âge du TLE), trace au sol, et recherche par nom ou identifiant NORAD.
-
-*(Captures d’écran à ajouter — globe avec la coquille Starlink, fiche détail de l’ISS, tableau des prochains passages.)*
 
 ## Fonctionnalités
 
