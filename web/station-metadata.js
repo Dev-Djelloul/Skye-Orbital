@@ -6,7 +6,7 @@
 // fiable ; tout objet absent de cette table retombe sur la fiche standard.
 //
 // Photos : Wikimedia Commons (licences libres), URLs vérifiées manuellement.
-// Logos d'agences : fournis par l'utilisateur (assets/Icons/) pour NASA, ESA,
+// Logos d'agences : fournis par l'utilisateur (sources dans docs/assets/agencies-source/) pour NASA, ESA,
 // JAXA, CSA, Roscosmos, SpaceX et CMSA (Chine) ; complété depuis Wikimedia
 // Commons pour Northrop Grumman (seule agence sans asset fourni).
 

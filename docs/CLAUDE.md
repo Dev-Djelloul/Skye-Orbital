@@ -119,7 +119,9 @@ web/app.js                  Orchestration frontend : état, filtres, recherche, 
 
 ## Matériel de référence disponible (ajouté par l'utilisateur, pas par moi)
 
-- `assets/Images/Globe avec la coquille Starlink.png` — capture d'écran de référence
+- `docs/assets/screenshots/` — captures d'écran de référence (globe, briefing du jour, rapprochements)
+- `docs/assets/agencies-source/` — logos agences spatiales, versions source (les versions optimisées servies par l'app sont dans `web/assets/agencies/`)
+- `docs/assets/branding/` — prototype de logo animé (export design)
 - `docs/*.pdf` — papier sur un propagateur SGP4 différentiable, fiche USSF sur le 18th Space Defense Squadron
 
 ## État actuel — À VÉRIFIER EN PRIORITÉ
