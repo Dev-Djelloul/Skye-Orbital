@@ -18,8 +18,25 @@ const ALLOWED_GROUPS = new Set([
   'cosmos-2251-debris',
 ]);
 
-// Phase 1 : seul "stations" est peuplé en D1 (critère de sortie de la phase).
-const REFRESH_GROUPS = ['stations'];
+// Groupes rafraîchis proactivement par le cron (toutes les 2h, cf. [triggers]
+// dans wrangler.orbital.toml), pour que le cache KV ne soit jamais vide au
+// moment où le frontend les demande. "active" est exclu : listé dans
+// ALLOWED_GROUPS mais jamais consommé par web/data.js (GROUPS), donc son
+// refetch (et l'attente qu'il implique) serait pur gaspillage.
+//
+// Avant ce fix, seul "stations" était rafraîchi ici — les 5 autres groupes
+// (dont "starlink", plusieurs milliers d'objets) dépendaient entièrement
+// d'un refetch à la demande dès l'expiration du TTL KV (2h) : le premier
+// visiteur après expiration attendait le fetch CelesTrak complet en direct
+// (jusqu'à ~40s pour les plus gros groupes) avant que la page charge.
+const REFRESH_GROUPS = [
+  'stations',
+  'starlink',
+  'cosmos-1408-debris',
+  'fengyun-1c-debris',
+  'iridium-33-debris',
+  'cosmos-2251-debris',
+];
 
 const TLE_ROUTE_PATTERN = /^\/tle\/([a-z0-9-]+)$/i;
 
