@@ -58,6 +58,23 @@ export default {
       }
     }
 
+    if (request.method === 'GET' && url.pathname === '/geoip') {
+      // Filet de secours quand navigator.geolocation échoue côté navigateur
+      // (permission refusée, Services de localisation désactivés au niveau
+      // OS, timeout...) : Cloudflare géolocalise déjà chaque requête par IP
+      // au niveau du edge (request.cf), sans permission ni appel externe.
+      // Précision à l'échelle de la ville, largement suffisante pour un
+      // calcul de passages satellite.
+      const { latitude, longitude, city, country } = request.cf ?? {};
+      if (latitude == null || longitude == null) {
+        return jsonResponse({ error: 'Position IP indisponible' }, 404);
+      }
+      return jsonResponse(
+        { latDeg: Number(latitude), lonDeg: Number(longitude), city: city ?? null, country: country ?? null },
+        200
+      );
+    }
+
     if (request.method === 'GET' && url.pathname === '/conjunctions') {
       return getConjunctions(env);
     }

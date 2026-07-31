@@ -409,9 +409,29 @@ function wireObserverEvents() {
   obsLatInput.addEventListener('change', applyManualPosition);
   obsLonInput.addEventListener('change', applyManualPosition);
 
+  // Filet de secours quand navigator.geolocation échoue (permission refusée,
+  // Services de localisation désactivés au niveau OS, timeout...) : position
+  // approximative à l'échelle de la ville, déduite de l'IP par Cloudflare
+  // côté Worker (voir /geoip dans orbital-api.js) — aucune permission requise.
+  const useGeoipFallback = async () => {
+    obsStatusEl.textContent = 'Géolocalisation précise indisponible, position approximative (IP) en cours…';
+    try {
+      const res = await fetch(`${Data.API_BASE}/geoip`);
+      if (!res.ok) throw new Error(`API a répondu ${res.status}`);
+      const { latDeg, lonDeg, city } = await res.json();
+      obsLatInput.value = latDeg.toFixed(4);
+      obsLonInput.value = lonDeg.toFixed(4);
+      state.observer = { latDeg, lonDeg };
+      obsStatusEl.textContent = `Position approximative${city ? ` (${city})` : ''} — basée sur votre IP, précision à l'échelle de la ville.`;
+      recomputePasses();
+    } catch {
+      obsStatusEl.textContent = 'Géolocalisation indisponible — vérifie les autorisations de localisation de ton navigateur/système, ou saisis ta position manuellement ci-dessus.';
+    }
+  };
+
   obsGeolocateBtn.addEventListener('click', () => {
     if (!navigator.geolocation) {
-      obsStatusEl.textContent = "Géolocalisation non disponible sur ce navigateur.";
+      useGeoipFallback();
       return;
     }
     obsStatusEl.textContent = 'Localisation en cours…';
@@ -425,9 +445,7 @@ function wireObserverEvents() {
         obsStatusEl.textContent = '';
         recomputePasses();
       },
-      (err) => {
-        obsStatusEl.textContent = `Géolocalisation refusée ou indisponible (${err.message}).`;
-      },
+      () => useGeoipFallback(),
       { timeout: 20000, maximumAge: 60000 }
     );
   });
