@@ -428,7 +428,7 @@ function wireObserverEvents() {
       (err) => {
         obsStatusEl.textContent = `Géolocalisation refusée ou indisponible (${err.message}).`;
       },
-      { timeout: 10000 }
+      { timeout: 20000, maximumAge: 60000 }
     );
   });
 }
