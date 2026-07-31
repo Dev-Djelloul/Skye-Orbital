@@ -1,0 +1,8 @@
+# Config déclarative pour le projet Cloudflare Pages "skye-orbital" (site
+# statique dans web/). Nécessaire pour que les déploiements automatiques
+# déclenchés par l'intégration GitHub (à chaque push sur master) utilisent le
+# bon dossier de build — sans ce fichier, ce réglage dépend uniquement de la
+# config du dashboard Cloudflare, qui pointait sur la racine du dépôt (donc
+# aucun index.html trouvé) au lieu de web/, d'où le 404 en production.
+name = "skye-orbital"
+pages_build_output_dir = "web"
