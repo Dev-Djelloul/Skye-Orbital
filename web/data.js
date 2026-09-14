@@ -33,8 +33,27 @@ export const GROUPS = [
   },
 ];
 
+// Le Worker sert normalement en quelques centaines de ms (cache KV), mais un
+// cache expiré sans filet de secours (premier chargement d'un groupe, ou LKG
+// jamais rempli) peut le forcer à attendre CelesTrak en direct — observé
+// jusqu'à ~40s pour un groupe pourtant minuscule (incident du 2026-09-14).
+// Sans timeout, une telle requête bloque `fetchAllGroups` indéfiniment côté
+// navigateur puisqu'il attend que tous les groupes soient réglés avant
+// d'afficher quoi que ce soit.
+const FETCH_TIMEOUT_MS = 15000;
+
+async function fetchWithTimeout(url, timeoutMs = FETCH_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { signal: controller.signal });
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
 export async function fetchSatellites(group = GROUP) {
-  const res = await fetch(`${API_BASE}/tle/${group}`);
+  const res = await fetchWithTimeout(`${API_BASE}/tle/${group}`);
   if (!res.ok) {
     throw new Error(`Erreur API (${res.status})`);
   }
@@ -50,18 +69,20 @@ export async function fetchSatellites(group = GROUP) {
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Un groupe peut échouer transitoirement (Worker froid, 502 si CelesTrak
-// throttle avant que le filet de secours ne prenne le relais, blip réseau).
-// On réessaie avec un backoff court avant d'abandonner le groupe.
+// throttle avant que le filet de secours ne prenne le relais, blip réseau,
+// timeout). On réessaie avec un backoff court avant d'abandonner le groupe.
 async function fetchGroupWithRetry(groupConfig, attempts = 3) {
   let lastErr;
   for (let i = 0; i < attempts; i++) {
     try {
-      const res = await fetch(`${API_BASE}/tle/${groupConfig.key}`);
+      const res = await fetchWithTimeout(`${API_BASE}/tle/${groupConfig.key}`);
       if (!res.ok) throw new Error(`Erreur API (${res.status}) pour "${groupConfig.key}"`);
       const data = await res.json();
       return { groupConfig, data };
     } catch (err) {
-      lastErr = err;
+      lastErr = err.name === 'AbortError'
+        ? new Error(`Délai dépassé pour "${groupConfig.key}"`)
+        : err;
       if (i < attempts - 1) await sleep(700 * (i + 1));
     }
   }

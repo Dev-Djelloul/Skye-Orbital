@@ -41,7 +41,7 @@ const REFRESH_GROUPS = [
 const TLE_ROUTE_PATTERN = /^\/tle\/([a-z0-9-]+)$/i;
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const match = TLE_ROUTE_PATTERN.exec(url.pathname);
 
@@ -51,7 +51,7 @@ export default {
         return jsonResponse({ error: `Groupe inconnu: ${group}` }, 400);
       }
       try {
-        const result = await getCachedOrFetchTle(env, group);
+        const result = await getCachedOrFetchTle(env, group, { ctx });
         return jsonResponse(result, 200);
       } catch (err) {
         return jsonResponse({ error: err.message }, 502);
@@ -191,7 +191,7 @@ async function getConjunctions(env) {
   return jsonResponse({ conjunctions: result.results }, 200);
 }
 
-async function getCachedOrFetchTle(env, group, { forceRefresh = false } = {}) {
+async function getCachedOrFetchTle(env, group, { forceRefresh = false, ctx = null } = {}) {
   const cacheKey = `tle:${group}`;
   // Copie "dernier bon jeu connu", SANS expiration. Le cache 2h (`cacheKey`)
   // sert de signal de fraîcheur/politique CelesTrak ; ce filet de secours
@@ -210,7 +210,34 @@ async function getCachedOrFetchTle(env, group, { forceRefresh = false } = {}) {
       }
       return { ...cached, cached: true };
     }
+
+    // Cache 2h expiré : si on a un dernier bon jeu connu, on le sert tout de
+    // suite (stale-while-revalidate) et on rafraîchit en tâche de fond via
+    // ctx.waitUntil, plutôt que de bloquer la requête sur un fetch CelesTrak
+    // en direct — observé jusqu'à ~40s pour un groupe pourtant minuscule
+    // ("stations", incident du 2026-09-14), ce qui gelait tout le chargement
+    // du frontend (qui attend tous les groupes avant d'afficher quoi que ce soit).
+    const stale = await env.TLE_CACHE.get(lkgKey, 'json');
+    if (stale) {
+      const revalidate = fetchAndCacheTle(env, group).catch((err) => {
+        console.error(`Revalidation en tâche de fond échouée pour "${group}": ${err.message}`);
+      });
+      if (ctx) ctx.waitUntil(revalidate);
+      return { ...stale, cached: true, stale: true };
+    }
   }
+
+  return fetchAndCacheTle(env, group);
+}
+
+// Fetch CelesTrak en direct + écriture du cache 2h et du filet de secours.
+// Bloquant : n'appeler en direct (sans passer par ctx.waitUntil) que pour un
+// premier chargement (aucune donnée en cache du tout) ou un forceRefresh
+// planifié — dans les autres cas, getCachedOrFetchTle sert le stale et
+// revalide en tâche de fond.
+async function fetchAndCacheTle(env, group) {
+  const cacheKey = `tle:${group}`;
+  const lkgKey = `tle:${group}:lkg`;
 
   const url = `${CELESTRAK_BASE}?GROUP=${encodeURIComponent(group)}&FORMAT=tle`;
   let res;
