@@ -44,6 +44,13 @@ const state = {
 
 init();
 
+// true une fois le globe Cesium prêt (viewer créé + premières tuiles
+// rendues). Sert à savoir, dans loadSatelliteData et le .then ci-dessous,
+// lequel des deux (globe ou données) termine en dernier — celui-là seul
+// masque le loader et lance le premier tick (Globe.updatePositions ferait
+// planter avant que les collections de points/labels ne soient créées).
+let globeReady = false;
+
 async function init() {
   buildFilterPanel();
   wireFilterEvents();
@@ -52,11 +59,22 @@ async function init() {
   wireConjunctionsModal();
   wireBriefingModal();
 
-  await Globe.initGlobe('cesiumContainer', onSelect);
+  // Le rendu du globe (Cesium + chargement des tuiles) et le fetch des
+  // données satellite sont indépendants — les lancer en parallèle plutôt
+  // qu'en séquence économise plusieurs secondes au chargement initial
+  // (mesuré : ~9s d'attente du globe avant même le premier fetch TLE).
+  const globeInit = Globe.initGlobe('cesiumContainer', onSelect).then(() => {
+    globeReady = true;
+    if (state.satellites.length > 0) {
+      loaderEl.style.display = 'none';
+      tick();
+    }
+  });
+
+  await Promise.all([globeInit, loadSatelliteData()]);
+
   setInterval(tick, REFRESH_MS);
   setInterval(recomputePasses, PASSES_REFRESH_MS);
-
-  await loadSatelliteData();
 }
 
 // Chargement (et rechargement) des données satellites. Séparé de l'init du
@@ -84,9 +102,11 @@ async function loadSatelliteData() {
   if (tleData.failedGroups.length > 0) {
     console.warn('Groupes en échec:', tleData.failedGroups);
   }
-  loaderEl.style.display = 'none';
   selectDefault();
-  tick();
+  if (globeReady) {
+    loaderEl.style.display = 'none';
+    tick();
+  }
 }
 
 function setLoader(html) {
