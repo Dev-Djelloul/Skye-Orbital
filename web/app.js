@@ -429,14 +429,36 @@ function wireObserverEvents() {
     }
   };
 
+  // Délai de secours indépendant du `timeout` natif de l'API. Sur macOS,
+  // quand les Services de localisation système sont désactivés pour le
+  // navigateur, Chrome n'appelle NI le callback de succès NI celui d'erreur
+  // et ignore l'option `timeout` — sans ce filet, le bouton reste bloqué sur
+  // « Localisation en cours… » indéfiniment (observé en prod, cf. rapport
+  // utilisateur du 2026-09-14). On bascule nous-mêmes sur l'IP passé ce
+  // délai, sans empêcher un succès natif tardif de mettre à jour la position
+  // ensuite (elle est plus précise que le fallback IP).
+  const GEOLOCATION_WATCHDOG_MS = 8000;
+
   obsGeolocateBtn.addEventListener('click', () => {
     if (!navigator.geolocation) {
       useGeoipFallback();
       return;
     }
+
     obsStatusEl.textContent = 'Localisation en cours…';
+
+    let fallbackDone = false;
+    const runFallbackOnce = () => {
+      if (fallbackDone) return;
+      fallbackDone = true;
+      useGeoipFallback();
+    };
+    const watchdog = setTimeout(runFallbackOnce, GEOLOCATION_WATCHDOG_MS);
+
     navigator.geolocation.getCurrentPosition(
       (pos) => {
+        clearTimeout(watchdog);
+        fallbackDone = true;
         const latDeg = pos.coords.latitude;
         const lonDeg = pos.coords.longitude;
         obsLatInput.value = latDeg.toFixed(4);
@@ -445,7 +467,10 @@ function wireObserverEvents() {
         obsStatusEl.textContent = '';
         recomputePasses();
       },
-      () => useGeoipFallback(),
+      () => {
+        clearTimeout(watchdog);
+        runFallbackOnce();
+      },
       { timeout: 20000, maximumAge: 60000 }
     );
   });
